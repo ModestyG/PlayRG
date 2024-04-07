@@ -114,8 +114,15 @@ body {
 
 #dialog-box {
   width: auto;
-  height: 30%;
+  height: 25%;
   background-color: white;
-  margin: 10px;
-  border-radius: 20px;
+  margin: 15px;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: auto;
+}
+
+#dialog-box::first-line {
+  font-weight: bold;
+  text-decoration: underline;
 }
