@@ -1,31 +1,8 @@
 class Contact {
   constructor(name, greeting) {
     this.name = name;
-    this.availableMissions = [
-      new Mission(
-        "The Start",
-        0,
-        new TextDialog(
-          "Cain",
-          "Right. Since this is your first day on the job I though we'd start you off with some training scenarios."
-        )
-      ),
-    ];
-    let missionChoices = [];
-    this.availableMissions.forEach((mission) => {
-      missionChoices.push(mission.name); //Choice name
-      missionChoices.push(mission.introDialog); //Where the choice sends us
-      missionChoices.push(() => {
-        // Effect
-        currentMission = mission;
-      });
-    });
-    this.chooseNewMissionDialog = new ChoiceDialog(...missionChoices);
-    this.greeting = new TextDialog(
-      this.name,
-      "Greetings, Agent. How are things going?",
-      this.chooseNewMissionDialog
-    );
+    this.availableMissions = [];
+    this.greeting = greeting;
     this.missionDialogs = { 0: { 0: placeholderDialog } };
   }
   getMissionDialog(mission) {
@@ -35,6 +12,22 @@ class Contact {
         return missionDialogDict[i];
       }
     }
+  }
+  getMissionChoiceDialog() {
+    let list = [];
+    this.availableMissions.forEach((mission) => {
+      list.push(
+        new Choice(mission.name, mission.introDialog, () => {
+          currentMission = mission;
+        })
+      );
+    });
+    return new ChoiceDialog(...list);
+  }
+
+  addAvailableMission(mission) {
+    this.availableMissions.push(mission);
+    this.greeting.nextDialog = this.getMissionChoiceDialog();
   }
 }
 
@@ -60,26 +53,49 @@ class TextDialog {
 class ChoiceDialog {
   constructor(...choices) {
     //Varje val läggs in med sin text följt av assosierad frame och ev medföljande effekt
-    this.choiceTexts = [];
-    this.choiceDialogs = [];
-    this.choiceEffects = [];
-    for (let i = 0; i < choices.length; i += 3) {
-      this.choiceTexts.push(choices[i]);
-      this.choiceDialogs.push(choices[i + 1]);
-      this.choiceEffects.push(choices[i + 2]);
-    }
+    this.choices = choices;
   }
 }
 
-let placeholderDialog = new ChoiceDialog("Placeholder", null, () => {
-  console.log("Placeholder effect");
-});
+class Choice {
+  constructor(text, dialog, effect) {
+    this.text = text;
+    this.dialog = dialog;
+    this.effect = effect;
+  }
+}
+
+let placeholderDialog = new ChoiceDialog(
+  new Choice("Placeholder", null, () => {
+    console.log("Placeholder effect");
+  })
+);
 
 let missionDiv = document.getElementById("mission-div");
 let phoneButton = document.getElementById("phone-button");
 let phoneDiv = document.getElementById("phone-div");
 let crypto = 50;
-let contacts = [new Contact("Cain")];
+let contacts = [
+  new Contact(
+    "Cain",
+    (greeting = new TextDialog(
+      (speaker = "Cain"),
+      (text = "Greetings, Agent. How are things going?")
+    ))
+  ),
+];
+contacts[0].addAvailableMission(
+  // Add starting mission to Cain
+  new Mission(
+    "The Start",
+    0,
+    new TextDialog(
+      "Cain",
+      "Right. Since this is your first day on the job I though we'd start you off with some training scenarios."
+    )
+  )
+);
+
 let currentMission = null;
 
 //Load saved values
@@ -122,17 +138,17 @@ function call(dialog) {
       call(dialog.nextDialog);
     };
   } else if (dialog instanceof ChoiceDialog) {
-    for (let i = 0; i < dialog.choiceTexts.length; i++) {
+    dialog.choices.forEach((choice) => {
       choiceButton = document.createElement("button");
-      choiceButton.innerHTML = dialog.choiceTexts[i];
+      choiceButton.innerHTML = choice.text;
       choiceButton.onclick = () => {
-        if (dialog.choiceEffects[i]) {
-          dialog.choiceEffects[i]();
+        if (choice.effect) {
+          choice.effect();
         }
-        call(dialog.choiceDialogs[i]);
+        call(choice.dialog);
       };
       dialogBox.appendChild(choiceButton);
-    }
+    });
   }
 }
 
