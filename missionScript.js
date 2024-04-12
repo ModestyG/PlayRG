@@ -3,24 +3,7 @@ class Contact {
     this.name = name;
     this.availableMissions = [];
     this.greeting = greeting;
-    this.missionDialogs = {
-      0: {
-        0: new TextInputDialog(
-          "Enter code:",
-          {
-            123: () => {
-              currentMission.progress++;
-              call(new TextDialog(this.name, "Good Job!"));
-            },
-          },
-          new TextDialog(this.name, "That is wrong. Try typing 123.")
-        ),
-        1: new TextDialog(
-          this.name,
-          "Sorry, but I'm afraid this is where tha game ends :/"
-        ),
-      },
-    };
+    this.missionDialogs = MISSION_CONTENTS[this.name];
   }
   getMissionDialog(mission) {
     let missionDialogDict = this.missionDialogs[mission.id];
@@ -49,57 +32,19 @@ class Contact {
   }
 }
 
-class Mission {
-  constructor(name, id, introDialog) {
-    this.name = name;
-    this.id = id;
-    this.introDialog = introDialog;
-    this.progress = 0;
-  }
-}
-
-// Dialog classes
-
-class TextDialog {
-  constructor(speaker, text, nextDialog) {
-    this.speaker = speaker;
-    this.text = text;
-    this.nextDialog = nextDialog;
-  }
-}
-
-class ChoiceDialog {
-  constructor(...choices) {
-    this.choices = choices;
-  }
-}
-
-class TextInputDialog {
-  constructor(text, results, failDialog) {
-    this.text = text;
-    this.results = results;
-    this.failDialog = failDialog;
-  }
-}
-
-class Choice {
-  constructor(text, dialog, effect) {
-    this.text = text;
-    this.dialog = dialog;
-    this.effect = effect;
-  }
-}
-
-let placeholderDialog = new ChoiceDialog(
+const placeholderDialog = new ChoiceDialog(
   new Choice("Placeholder", null, () => {
     console.log("Placeholder effect");
   })
 );
 
-let missionDiv = document.getElementById("mission-div");
-let phoneButton = document.getElementById("phone-button");
-let phoneDiv = document.getElementById("phone-div");
+const missionDiv = document.getElementById("mission-div");
+const phoneButton = document.getElementById("phone-button");
+const phoneDiv = document.getElementById("phone-div");
 let crypto = 50;
+let currentMission = null;
+
+//We begin with only one contact
 let contacts = [
   new Contact(
     "Cain",
@@ -109,19 +54,7 @@ let contacts = [
     ))
   ),
 ];
-contacts[0].addAvailableMission(
-  // Add starting mission to Cain
-  new Mission(
-    "The Start",
-    0,
-    new TextDialog(
-      "Cain",
-      "Right. Since this is your first day on the job I though we'd start you off with some training scenarios."
-    )
-  )
-);
-
-let currentMission = null;
+contacts[0].addAvailableMission(MISSIONS[0]);
 
 //Load saved values
 if (localStorage.length) {
