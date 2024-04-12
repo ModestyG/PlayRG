@@ -3,11 +3,29 @@ class Contact {
     this.name = name;
     this.availableMissions = [];
     this.greeting = greeting;
-    this.missionDialogs = { 0: { 0: placeholderDialog } };
+    this.missionDialogs = {
+      0: {
+        0: new TextInputDialog(
+          "Enter code:",
+          {
+            123: () => {
+              currentMission.progress++;
+              call(new TextDialog(this.name, "Good Job!"));
+            },
+          },
+          new TextDialog(this.name, "That is wrong. Try typing 123.")
+        ),
+        1: new TextDialog(
+          this.name,
+          "Sorry, but I'm afraid this is where tha game ends :/"
+        ),
+      },
+    };
   }
   getMissionDialog(mission) {
     let missionDialogDict = this.missionDialogs[mission.id];
     for (let i = mission.progress; i >= 0; i--) {
+      console.log(missionDialogDict[i]);
       if (missionDialogDict[i]) {
         return missionDialogDict[i];
       }
@@ -52,8 +70,15 @@ class TextDialog {
 
 class ChoiceDialog {
   constructor(...choices) {
-    //Varje val läggs in med sin text följt av assosierad frame och ev medföljande effekt
     this.choices = choices;
+  }
+}
+
+class TextInputDialog {
+  constructor(text, results, failDialog) {
+    this.text = text;
+    this.results = results;
+    this.failDialog = failDialog;
   }
 }
 
@@ -128,7 +153,7 @@ function call(dialog) {
   dialogBox.id = "dialog-box";
   phoneDiv.appendChild(dialogBox);
   if (!dialog) {
-    closePhone();
+    openPhone();
   } else if (dialog instanceof TextDialog) {
     dialogBox.innerText = `${dialog.speaker}
     ${dialog.text}`;
@@ -149,6 +174,24 @@ function call(dialog) {
       };
       dialogBox.appendChild(choiceButton);
     });
+  } else if (dialog instanceof TextInputDialog) {
+    dialogBox.innerText = dialog.text;
+
+    inputBox = document.createElement("INPUT");
+    inputBox.setAttribute("type", "text");
+    dialogBox.appendChild(inputBox);
+
+    submitButton = document.createElement("button");
+    submitButton.innerText = "Submit";
+    submitButton.onclick = () => {
+      input = inputBox.value;
+      if (dialog.results[input]) {
+        dialog.results[input]();
+      } else {
+        call(dialog.failDialog);
+      }
+    };
+    dialogBox.appendChild(submitButton);
   }
 }
 
