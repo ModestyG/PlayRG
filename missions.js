@@ -15,6 +15,7 @@ const MISSION_CONTENTS = {
         {
           123: () => {
             currentMission.progress++;
+            gameManager.addOpenClue(CLUES[0]);
             call(new TextDialog("Cain", "Good Job!"));
           },
         },

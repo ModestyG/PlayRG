@@ -32,7 +32,7 @@ fetch(
     sites = data.map((site) => {
       let link = document.createElement("a");
       link.innerText = site.name;
-      link.href = "search/" + site.file;
+      link.href = "search/" + site.clue;
       link.classList.add("search-link");
       resultsDiv.appendChild(link);
       return { name: site.name, element: link };

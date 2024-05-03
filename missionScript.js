@@ -1,3 +1,5 @@
+// Code regarding phone and missions ============================================================================================
+
 class Contact {
   constructor(name, greeting) {
     this.name = name;
@@ -8,7 +10,6 @@ class Contact {
   getMissionDialog(mission) {
     let missionDialogDict = this.missionDialogs[mission.id];
     for (let i = mission.progress; i >= 0; i--) {
-      console.log(missionDialogDict[i]);
       if (missionDialogDict[i]) {
         return missionDialogDict[i];
       }
@@ -41,7 +42,6 @@ const placeholderDialog = new ChoiceDialog(
 const missionDiv = document.getElementById("mission-div");
 const phoneButton = document.getElementById("phone-button");
 const phoneDiv = document.getElementById("phone-div");
-let crypto = 50;
 let currentMission = null;
 
 //We begin with only one contact
@@ -55,11 +55,6 @@ let contacts = [
   ),
 ];
 contacts[0].addAvailableMission(MISSIONS[0]);
-
-//Load saved values
-if (localStorage.length) {
-  crypto = Number(localStorage.getItem("crypto"));
-}
 
 function openPhone() {
   phoneButton.classList.add("hidden");
@@ -136,9 +131,15 @@ function closePhone() {
 function addCrypto() {
   crypto += 1;
   if (typeof Storage !== "undefined") {
-    localStorage.setItem("crypto", crypto);
     console.log(crypto);
   } else {
     console.log("Error: Your browser does not support Web Storage");
   }
 }
+
+//(A lot of space so it is visible on the minimap to the right)
+// Code regarding clue manipulation on the mission board ========================================================================
+
+gameManager.openedClues.forEach((clue) => {
+  gameManager.addClue(clue);
+});
