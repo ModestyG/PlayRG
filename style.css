@@ -127,9 +127,27 @@ body {
   text-decoration: underline;
 }
 
-#test-btn {
-  position: absolute;
-  top: 20px;
-  width: 50px;
-  height: 20px;
+#clue-container-div {
+  display: flex;
+  border: dotted;
+}
+
+.clue-button {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  left: -16px;
+  border-radius: 50%;
+}
+
+.add-clue-button {
+  background-color: lightgreen;
+  color: darkGreen;
+  font-size: 20px;
+}
+
+.remove-clue-button {
+  background-color: lightcoral;
+  color: darkred;
+  font-size: 25px;
 }

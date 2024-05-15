@@ -19,9 +19,14 @@ class Contact {
     let list = [];
     this.availableMissions.forEach((mission) => {
       list.push(
-        new Choice(mission.name, mission.introDialog, () => {
-          currentMission = mission;
-        })
+        new Choice(
+          mission.name,
+          MISSION_CONTENTS[this.name][mission.id][0],
+          () => {
+            gameManager.setCurrentMission(mission);
+            gameManager.currentMission.progress = 0;
+          }
+        )
       );
     });
     return new ChoiceDialog(...list);
@@ -42,7 +47,6 @@ const placeholderDialog = new ChoiceDialog(
 const missionDiv = document.getElementById("mission-div");
 const phoneButton = document.getElementById("phone-button");
 const phoneDiv = document.getElementById("phone-div");
-let currentMission = null;
 
 //We begin with only one contact
 let contacts = [
@@ -64,10 +68,10 @@ function openPhone() {
   contacts.forEach((contact) => {
     btn = document.createElement("button");
     btn.onclick = () => {
-      if (!currentMission) {
+      if (!gameManager.currentMission) {
         call(contact.greeting);
       } else {
-        call(contact.getMissionDialog(currentMission));
+        call(contact.getMissionDialog(gameManager.currentMission));
       }
     };
     btn.innerHTML = contact.name;
@@ -88,6 +92,9 @@ function call(dialog) {
     phoneDiv.onmousedown = () => {
       //Använder mousedown så att första klicken (den på kontaktknappen) inte räknas
       phoneDiv.onmousedown = null;
+      if (dialog.effect) {
+        dialog.effect();
+      }
       call(dialog.nextDialog);
     };
   } else if (dialog instanceof ChoiceDialog) {
@@ -141,5 +148,16 @@ function addCrypto() {
 // Code regarding clue manipulation on the mission board ========================================================================
 
 gameManager.openedClues.forEach((clue) => {
-  gameManager.addClue(clue);
+  clue.open();
+  removeButton = document.createElement("button");
+  removeButton.classList.add("clue-button");
+  removeButton.classList.add("remove-clue-button");
+  removeButton.style.top = `${clue.height - 32}px`;
+  removeButton.innerHTML = "<i class='fa-solid fa-xmark'></i>";
+  removeButton.onclick = () => {
+    gameManager.removeOpenClue(clue);
+    clue.element.style.display = "none";
+  };
+  clue.element.appendChild(removeButton);
+  document.body.appendChild(clue.element);
 });

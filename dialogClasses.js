@@ -1,7 +1,8 @@
 class TextDialog {
-  constructor(speaker, text, nextDialog) {
+  constructor(speaker, text, effect, nextDialog) {
     this.speaker = speaker;
     this.text = text;
+    this.effect = effect;
     this.nextDialog = nextDialog;
   }
 }
