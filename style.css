@@ -129,25 +129,34 @@ body {
 
 #clue-container-div {
   display: flex;
-  border: dotted;
 }
 
 .clue-button {
-  position: relative;
-  width: 45px;
-  height: 45px;
-  left: -16px;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: -12px;
   border-radius: 50%;
 }
 
 .add-clue-button {
   background-color: lightgreen;
   color: darkGreen;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .remove-clue-button {
   background-color: lightcoral;
   color: darkred;
-  font-size: 25px;
+  font-size: 18px;
+}
+
+.clue {
+  margin: 15px;
+  /* Used so that it is recognized as the clue.button's block container */
+  transform: rotate(0deg);
+}
+
+#white-clue {
+  background-color: aliceblue;
 }

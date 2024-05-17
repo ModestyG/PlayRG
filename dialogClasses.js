@@ -1,8 +1,10 @@
 class TextDialog {
-  constructor(speaker, text, effect, nextDialog) {
+  constructor(speaker, texts, effect, nextDialog) {
     this.speaker = speaker;
-    this.text = text;
+    this.texts = texts;
+    if (typeof texts == "string") this.texts = [texts];
     this.effect = effect;
+    this.progress = 0;
     this.nextDialog = nextDialog;
   }
 }

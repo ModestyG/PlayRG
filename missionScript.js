@@ -88,15 +88,22 @@ function call(dialog) {
     openPhone();
   } else if (dialog instanceof TextDialog) {
     dialogBox.innerText = `${dialog.speaker}
-    ${dialog.text}`;
-    phoneDiv.onmousedown = () => {
-      //Använder mousedown så att första klicken (den på kontaktknappen) inte räknas
-      phoneDiv.onmousedown = null;
-      if (dialog.effect) {
-        dialog.effect();
-      }
-      call(dialog.nextDialog);
-    };
+    ${dialog.texts[dialog.progress]}`;
+    if (dialog.progress < dialog.texts.length - 1) {
+      phoneDiv.onmousedown = () => {
+        dialog.progress++;
+        call(dialog);
+      };
+    } else {
+      phoneDiv.onmousedown = () => {
+        //Använder mousedown så att första klicken (den på kontaktknappen) inte räknas
+        phoneDiv.onmousedown = null;
+        if (dialog.effect) {
+          dialog.effect();
+        }
+        call(dialog.nextDialog);
+      };
+    }
   } else if (dialog instanceof ChoiceDialog) {
     dialog.choices.forEach((choice) => {
       choiceButton = document.createElement("button");
@@ -148,16 +155,12 @@ function addCrypto() {
 // Code regarding clue manipulation on the mission board ========================================================================
 
 gameManager.openedClues.forEach((clue) => {
-  clue.open();
-  removeButton = document.createElement("button");
-  removeButton.classList.add("clue-button");
-  removeButton.classList.add("remove-clue-button");
-  removeButton.style.top = `${clue.height - 32}px`;
-  removeButton.innerHTML = "<i class='fa-solid fa-xmark'></i>";
-  removeButton.onclick = () => {
+  clue.open(gameManager.openedClues);
+  clue.button.classList.add("remove-clue-button");
+  clue.button.innerHTML = "<i class='fa-solid fa-xmark'></i>";
+  clue.button.onclick = () => {
     gameManager.removeOpenClue(clue);
-    clue.element.style.display = "none";
+    clue.div.style.display = "none";
   };
-  clue.element.appendChild(removeButton);
-  document.body.appendChild(clue.element);
+  document.body.appendChild(clue.div);
 });
