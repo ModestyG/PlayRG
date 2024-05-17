@@ -38,12 +38,6 @@ class Contact {
   }
 }
 
-const placeholderDialog = new ChoiceDialog(
-  new Choice("Placeholder", null, () => {
-    console.log("Placeholder effect");
-  })
-);
-
 const missionDiv = document.getElementById("mission-div");
 const phoneButton = document.getElementById("phone-button");
 const phoneDiv = document.getElementById("phone-div");
@@ -63,10 +57,13 @@ contacts[0].addAvailableMission(MISSIONS[0]);
 function openPhone() {
   phoneButton.classList.add("hidden");
   phoneDiv.style.display = "flex";
+  phoneDiv.classList.remove("close");
+  phoneDiv.classList.add("open");
   phoneDiv.innerHTML =
-    "<button onclick='closePhone()' id='close-phone-button'>x</button>";
+    "<button onclick='closePhone()' id='close-phone-button'><i class='fa-regular fa-square'></i></button>";
   contacts.forEach((contact) => {
     btn = document.createElement("button");
+    btn.classList.add("contact-btn");
     btn.onclick = () => {
       if (!gameManager.currentMission) {
         call(contact.greeting);
@@ -138,8 +135,9 @@ function call(dialog) {
 }
 
 function closePhone() {
+  phoneDiv.classList.remove("open");
+  phoneDiv.classList.add("close");
   phoneButton.classList.remove("hidden");
-  phoneDiv.style.display = "none";
 }
 
 function addCrypto() {
@@ -160,7 +158,7 @@ gameManager.openedClues.forEach((clue) => {
   clue.button.innerHTML = "<i class='fa-solid fa-xmark'></i>";
   clue.button.onclick = () => {
     gameManager.removeOpenClue(clue);
-    clue.div.style.display = "none";
+    clue.div.classList.add("shrink");
   };
   document.body.appendChild(clue.div);
 });

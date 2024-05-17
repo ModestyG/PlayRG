@@ -21,8 +21,7 @@ class Clue {
     this.element.innerHtml = innerHtml;
 
     this.div = document.createElement("div");
-    this.div.style.transform = "rotate(0deg)";
-    this.div.style.margin = "15px";
+    this.div.classList.add("clue");
     this.div.appendChild(this.element);
 
     this.button = document.createElement("button");

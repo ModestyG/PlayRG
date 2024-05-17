@@ -6,6 +6,7 @@ gameManager.clues.forEach((clue) => {
     clue.button.classList.add("add-clue-button");
     clue.button.innerHTML = "<i class='fa-solid fa-plus'></i>";
     clue.button.onclick = () => {
+      clue.div.classList.add("shrink");
       gameManager.addOpenClue(clue);
     };
   }

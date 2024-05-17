@@ -51,6 +51,7 @@ body {
   display: flex;
 }
 
+/* Not used at the moment but I want to avoid deleting it in case I use it in the future. */
 .stacked-paper-border {
   /* Kod lånad och sen modifierad från https://css-tricks.com/snippets/css/stack-of-paper/ */
   box-shadow:
@@ -83,39 +84,57 @@ body {
 }
 
 #phone-div {
-  height: 90%;
-  width: 300px;
-  background-color: rgb(21, 21, 21);
-  align-self: center;
-  margin-left: auto;
-  margin-right: 10px;
-  border-radius: 20px;
   display: none;
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  bottom: 20px;
+  width: 290px;
+  border-radius: 30px;
+  border: 5px groove rgb(60, 60, 60);
+  background: rgb(92, 92, 92);
   flex-direction: column;
+  z-index: 9999;
+  align-items: center;
+  padding-top: 40px;
 }
 
 #phone-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
   height: 80px;
   width: 80px;
-  font-size: xx-large;
   border-radius: 50%;
+  font-size: xx-large;
   background-color: rgb(164, 221, 164);
   border-color: green;
-  align-self: flex-end;
-  margin-left: auto;
 }
 
 #close-phone-button {
-  width: 25px;
-  height: 25px;
-  background-color: red;
-  color: white;
+  position: absolute;
+  bottom: 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: gray;
+  color: lightgray;
+}
+
+.contact-btn {
+  color: lightgray;
+  background-color: gray;
+  border: 3px solid rgb(38, 38, 38);
+  height: 30px;
+  width: 90%;
+  border-radius: 5px;
 }
 
 #dialog-box {
   width: auto;
   height: 25%;
   background-color: white;
+  border: 3px solid rgb(38, 38, 38);
   margin: 15px;
   padding: 20px;
   border-radius: 15px;
@@ -148,7 +167,7 @@ body {
 .remove-clue-button {
   background-color: lightcoral;
   color: darkred;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .clue {
@@ -157,6 +176,49 @@ body {
   transform: rotate(0deg);
 }
 
-#white-clue {
-  background-color: aliceblue;
+/* ANIMATIONS */
+
+#phone-div.open {
+  animation: phone-open-anim 0.2s both;
+}
+
+#phone-div.close {
+  animation: phone-close-anim 0.2s both;
+}
+
+@keyframes phone-open-anim {
+  from {
+    transform: scale(0);
+    transform-origin: 100% 100%;
+  }
+  to {
+    transform: scale(1);
+    transform-origin: 100% 100%;
+  }
+}
+
+@keyframes phone-close-anim {
+  from {
+    transform: scale(1);
+    transform-origin: 100% 100%;
+  }
+  to {
+    transform: scale(0);
+    transform-origin: 100% 100%;
+  }
+}
+
+.clue.shrink {
+  animation: clue-shrink-anim 0.2s both;
+}
+
+@keyframes clue-shrink-anim {
+  0% {
+    transform: scale(1);
+    transform-origin: 0% 100%;
+  }
+  100% {
+    transform: scale(0);
+    transform-origin: 0% 100%;
+  }
 }

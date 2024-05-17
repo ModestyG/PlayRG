@@ -6,7 +6,6 @@ gameManager = {
   currentMission: null,
   addOpenClue(clue) {
     this.openedClues.push(clue);
-    clue.div.style.display = "none";
     this.save();
   },
   removeOpenClue(clue) {
