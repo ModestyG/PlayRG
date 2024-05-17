@@ -1,4 +1,5 @@
 //This code will be run on every page
+
 gameManager = {
   crypto: 0,
   clues: [],
@@ -71,3 +72,14 @@ gameManager.load();
 
 //This is mainly used if gameManager is not created when we want to call the save function
 addEventListener("save", (e) => gameManager.save());
+
+// Functions that can be run by any page
+
+function openHamburger() {
+  let burgMenuDiv = document.getElementById("hamburger-menu-div");
+  if (burgMenuDiv.style.right === "0vw") {
+    burgMenuDiv.style.right = "-100vw";
+  } else {
+    burgMenuDiv.style.right = "0vw";
+  }
+}

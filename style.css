@@ -38,17 +38,13 @@ body {
   background-color: bisque;
 }
 
-.game-bg-div {
+#game-bg-div {
   height: calc(100vh - 100px);
   width: calc(100vw - 60px);
   background-color: bisque;
   padding: 20px;
   box-shadow: 3px 3px 1px 1px rgba(0, 0, 0, 0.15);
   border-radius: 0px 10px 10px;
-}
-
-#mission-div {
-  display: flex;
 }
 
 /* Not used at the moment but I want to avoid deleting it in case I use it in the future. */
@@ -91,8 +87,8 @@ body {
   bottom: 20px;
   width: 290px;
   border-radius: 30px;
-  border: 5px groove rgb(60, 60, 60);
-  background: rgb(92, 92, 92);
+  border: 5px groove rgb(40, 40, 40);
+  background: rgb(62, 62, 62);
   flex-direction: column;
   z-index: 9999;
   align-items: center;
@@ -122,12 +118,14 @@ body {
 }
 
 .contact-btn {
-  color: lightgray;
-  background-color: gray;
+  color: rgb(243, 243, 243);
+  background-color: rgb(104, 104, 104);
   border: 3px solid rgb(38, 38, 38);
   height: 30px;
   width: 90%;
   border-radius: 5px;
+  font-family: "Ubuntu";
+  font-size: large;
 }
 
 #dialog-box {
@@ -139,12 +137,16 @@ body {
   padding: 20px;
   border-radius: 15px;
   margin-top: auto;
+  font-family: "Ubuntu";
+  font-size: large;
 }
 
 #dialog-box::first-line {
   font-weight: bold;
   text-decoration: underline;
 }
+
+/* CLUES */
 
 #clue-container-div {
   display: flex;
@@ -174,6 +176,65 @@ body {
   margin: 15px;
   /* Used so that it is recognized as the clue.button's block container */
   transform: rotate(0deg);
+}
+
+/* HAMBURGER */
+
+#hamburger-button {
+  display: none;
+  position: absolute;
+  right: 30px;
+  background-color: transparent;
+  color: rgb(95, 75, 51);
+  font-size: 30px;
+  border: none;
+}
+
+#hamburger-menu-div {
+  position: fixed;
+  right: -100vw;
+  top: 65px;
+  z-index: 999999;
+  height: 100vh;
+  transition: right 0.75s ease-out;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.hamburger-item {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hamburger-item a {
+  color: rgb(57, 74, 12);
+  text-decoration: none;
+  font-family: "Ubuntu";
+  font-size: large;
+  background-color: rgb(179, 236, 37);
+  padding: 8px 10px 8px 10px;
+  width: 140px;
+  text-align: center;
+  clip-path: polygon(10% 100%, 0 50%, 10% 0, 100% 0, 100% 100%);
+}
+.hamburger-item a.chosen {
+  background-color: rgb(236, 163, 37);
+}
+
+@media screen and (max-width: 520px) {
+  #top-menu {
+    display: none;
+  }
+  #game-bg-div {
+    height: calc(100vh - 60px);
+    border-radius: 20px;
+  }
+  #hamburger-button {
+    display: block;
+  }
 }
 
 /* ANIMATIONS */

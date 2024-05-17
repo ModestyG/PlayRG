@@ -12,13 +12,29 @@
       <a href="files.html">Files</a>
       <a class="chosen">Search</a>
     </div>
-    <div class="game-bg-div">
+    <div id="game-bg-div">
+      <button id="hamburger-button" onclick="openHamburger()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
         <form id="form">
             <input type="search" id="search">
         </form>
         <div id="search-results-div"></div>        
       </div>
     </div>
+  </div>
+  <div id="hamburger-menu-div">
+    <ul>
+      <li class="hamburger-item"><a href="mission.html">Mission</a></li>
+      <li class="hamburger-item"><a href="files.html">Files</a></li>
+      <li class="hamburger-item chosen"><a href="#">Search</a></li>
+    </ul>
+  </div>
   </body>
+  <script
+  src="https://kit.fontawesome.com/fa82cd23a1.js"
+  crossorigin="anonymous"
+></script>
+<script src="gameManagerScript.js"></script>
   <script src="searchScript.js"></script>
 </html>
